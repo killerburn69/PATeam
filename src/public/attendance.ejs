@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" name="csrf-token" content="IpPlY8UN6Q51F0VMTZ6g02yIgXNuul0bOYUUNeCH">
+    <link rel="icon" type="image/x-icon" href="images/Logo_PA.png">
+    <title>Chấm Công</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" href="https://www.lssdhrtime.com/assets/bootstrap-5.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://www.lssdhrtime.com/assets/fontawesome-6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Archivo+Black&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.7/css/bootstrap.min.css"
+        integrity="sha512-fw7f+TcMjTb7bpbLJZlP8g2Y4XcCyFZW8uy8HsRZsH/SwbMw0plKHFHr99DN3l04VsYNwvzicUX/6qurvIxbxw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <link rel="stylesheet" href="stylesheets/style.css">
+            <link rel="stylesheet" href="stylesheets/hr_employees.css">
+</head>
+        
+<body>
+            <link rel="stylesheet" href="stylesheets/navbar.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=BBH+Sans+Bogle&family=Lilita+One&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+<!-- <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom"></nav> -->
+    <header class="main-header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="nav-logo">
+                    <!-- <img src="https://www.lssdhrtime.com/assets/images/banner_lssd.png" width="230" height="auto" alt=""> -->
+                    <h5 class="lilita-one-regular">VINEWOOD ACADEMY'S DEPARTMENT</h5>
+                </div>
+                <div class="user-info d-flex align-items-center gap-2">
+                    <span>
+                        Xin chào, <a href="/profile" class=""> <%= position %>
+                        <strong><%= displayName %></strong>
+                        </a>
+                    </span>
+                    <div class="nav-avartar">
+                                                    <img src="<%= avatar %>"
+                                alt="Avatar"
+                                class="rounded-circle user-avatar"
+                                width="46"
+                                height="46"
+                                onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=<%= displayName %>&background=random';">
+                                            </div>
+                    <div class="dropdown">
+                        <button class="btn-drop-custom " type="button" id="userDropdown"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-caret-down"></i>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                            <li>
+                                <a class="dropdown-item text-primary " href="/profile">
+                                    Hồ sơ
+                                </a>
+                            </li>
+                            <% if (role === 'admin') { %>
+                            <li><a class="dropdown-item text-info" href="/admin">Panel Admin</a></li>
+                            <% } %>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item text-danger" href="/logout"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    Đăng xuất
+                                </a>
+                                <form id="logout-form" action="/logout" method="POST" class="d-none">
+                                    <input type="hidden" name="_token" value="IpPlY8UN6Q51F0VMTZ6g02yIgXNuul0bOYUUNeCH" autocomplete="off">                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container color-white">
+            <a class="navbar-brand d-flex align-items-center logo_lssd" href="/home">
+                <img src="images/Logo_PA.png" alt="Logo" height="50" class="me-3">
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-between" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link "
+                            href="/home"> Trang Chủ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active-link"
+                            href="/attendance"> Chấm Công</a>
+                    </li>
+                    
+                                    </ul>
+            </div>
+        </div>
+    </nav>
+
+    
+    <!-- Custom Loading Overlay -->
+    <div id="loadingOverlay" class="loader-overlay" style="display: none;">
+        <div class="lssd-loader-content">
+            <div class="lssd-badge">
+                <div class="star"></div>
+                <div class="text">PA</div>
+            </div>
+            <div class="loading-text">Loading VineWood Academy Department...</div>
+            <div class="loader-clock">
+                <span class="hour"></span>
+                <span class="min"></span>
+                <span class="circel"></span>
+            </div>
+        </div>
+    </div>
+
+        <div class="container mt-4">
+        <div class="row group-function p-2">
+            <div class="col-md-10 title-attendance">
+                
+                <p>Lương Trực Tiếp Tháng <%= currentMonth %>: <strong><%= monthlySalary %>$</strong></p>
+                <p>Chức Vụ: <strong><%= rank %> -
+                        <%= position %></strong></p>
+                <p>Hệ Số Lương: <strong><%= salaryRate %>$/1h</strong> <small>(Tối đa <%= maxDailyHours %>h/1 ngày)</small></p>
+                
+                <p>Tổng Sự Nghiệp: <strong><%= careerTotal %>$</strong></p>
+            </div>
+
+            <div class="col-md-2 d-flex justify-content-end">
+                <form method="POST" action="/attendance/check">
+                    <input type="hidden" name="_token" value="IpPlY8UN6Q51F0VMTZ6g02yIgXNuul0bOYUUNeCH" autocomplete="off">                                        
+                    <button type="submit" class="btn-timekeeping-fulltime <%= isOnDuty ? 'btn-danger' : 'btn-success' %>" <%= (todayHours >= maxDailyHours && !isOnDuty) ? 'disabled' : '' %> >
+                        <%= isOnDuty ? 'Off-Duty' : (todayHours >= maxDailyHours ? 'Đã đủ giờ' : 'On-Duty') %>
+                    </button>
+                </form>
+            </div>
+            <p class="text-notification pt-3 mb-0">
+                Vui lòng nhấn F5 trước khi On-Off Duty để làm mới trang nếu có vấn đề về hiển thị dữ liệu.
+            </p>
+        </div>
+        <div class="box-employees">
+            <div class="table-employees table-responsive">
+                <table class="table-bordered tb-timekeeping mb-5 text-center align-middle">
+                    <thead>
+                        <tr class="bg-warning">
+                            <th>Sĩ quan</th>
+                            <th>Ngày</th>
+                            <th>On-Duty</th>
+                            <th>Off-Duty</th>
+                            <th>Giờ</th>
+                            <th>Lương</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                                                    
+                            <tr class="bg_secondary_cus text-white">
+                                <td colspan="7" class="text-center">
+                                    <strong>Bảng chấm công tháng <%= currentMonth %></strong>
+                                </td>
+                            </tr>
+
+                            <% for (const date in groupedAttendance) { %>
+                                <% groupedAttendance[date].forEach(a => { %>
+                                    <tr>
+                                        <td><%= displayName %></td>
+                                        <td><%= a.date %></td>
+                                        <td><%= a.onTime %></td>
+                                        <td><%= a.offTime || 'Đang Làm Việc' %></td>
+                                        <td><%= (a.hours || 0).toFixed(2) %></td>
+                                        <td><%= (a.salary || 0).toLocaleString() %>$</td>
+                                        <td>
+                                            <span class="bg-danger p-1 text-white" style="border-radius: 8px;"><%= a.status %></span>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                                
+                                <tr class="total-day-timekeeping">
+                                    <td colspan="2">
+                                        Tổng ngày:
+                                        <strong><%= date %></strong>
+                                    </td>
+                                    <td colspan="4">
+                                        Lương ngày: <strong><%= groupedAttendance[date].reduce((sum, a) => sum + (a.salary || 0), 0).toLocaleString() %>$</strong>
+                                    </td>
+                                    <td>
+                                        Tổng Giờ:
+                                        <strong><%= groupedAttendance[date].reduce((sum, a) => sum + (a.hours || 0), 0).toFixed(2) %>h/<%= maxDailyHours %>h</strong>
+                                    </td>
+                                </tr>
+                            <% } %>
+                                                                        </tbody>
+                </table>
+                <div class="d-flex justify-content-center mt-3">
+                    
+                </div>
+            </div>
+        </div>
+        <div class="ket_noi_bang mt-0">
+            <h5 class="p-4"><strong>LỊCH SỬ TỔNG KẾT THÁNG</strong></h5>
+        </div>
+        <div class="box_history_time table-responsive">
+            <table class="tb_total_month">
+                <thead>
+                    <tr class="table-info">
+                        <th>Tháng/Năm</th>
+                        <th>Tổng giờ</th>
+                        <th>Tổng lương</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <% monthlyHistory.forEach(h => { %>
+                        <tr>
+                            <td><%= h.month %></td>
+                            <td><%= (h.hours || 0).toFixed(2) %>h</td>
+                            <td><%= (h.salary || 0).toLocaleString() %>$</td>
+                        </tr>
+                    <% }); %>
+                                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Thông Báo -->
+    <div class="notifications">
+        <span id="session-success" data-message=""></span>
+        <span id="session-warning" data-message=""></span>
+        <span id="session-info" data-message=""></span>
+        <!-- <span id="session-warning" data-message=""></span> -->
+        <span id="session-error" data-message=""></span>
+    </div>
+
+    
+            <div class="container">
+    <footer class="d-flex flex-column flex-lg-row justify-content-between align-items-start py-3 my-4 border-top">
+    </footer>
+</div>
+<style>
+    .contact_admin {
+        gap: 30px;
+
+        .fa-linkedin {
+            &:hover {
+                color: #0077b5;
+            }
+        }
+
+        .fa-youtube {
+            &:hover {
+                color: #ff0033;
+            }
+        }
+
+        li {
+            list-style: none;
+            transition: transform 0.3s ease;
+
+            &:hover {
+                transform: scale(1.1);
+            }
+        }
+    }
+
+    .custom_icon {
+        position: relative;
+        font-size: 30px;
+        color: #1f2328;
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 50px;
+            height: 50px;
+            transform: translate(-50%, -50%);
+            border: 3px solid #e8a800;
+            border-radius: 50%;
+        }
+    }
+</style>        <script>
+        document.querySelector('.loader').addEventListener('submit', function (e) {
+            showLoading();
+        });
+        function previewAvatar(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
+                const maxSize = 2 * 1024 * 1024; // 2MB
+
+                if (!allowedTypes.includes(file.type)) {
+                    alert('Chỉ cho phép ảnh định dạng JPEG, PNG, JPG, GIF');
+                    event.target.value = '';
+                    return;
+                }
+
+                if (file.size > maxSize) {
+                    alert('Kích thước ảnh tối đa là 2MB');
+                    event.target.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('avatarPreview').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-8YDHTMMQJE');
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8YDHTMMQJE"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.7/js/bootstrap.min.js" integrity="sha512-zKeerWHHuP3ar7kX2WKBSENzb+GJytFSBL6HrR2nPSR1kOX1qjm+oHooQtbDpDBSITgyl7QXZApvDfDWvKjkUw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+    <script src="https://www.lssdhrtime.com/assets/js/loading.js"></script>
+    <script src="https://www.lssdhrtime.com/assets/js/notification.js"></script>
+    <script src="https://www.lssdhrtime.com/assets/bootstrap-5.3.7-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     Swal.fire({
+        //         icon: 'info',
+        //         title: 'Thông Báo',
+        //         html: `<p style="text-align:left">
+        //                     <strong>Nhằm mục đích tránh lỗi </strong> chấm công và đảm bảo tính chính xác trong việc ghi nhận thời gian làm việc.<br><br>
+        //                     Tất cả sĩ quan <strong>On-Duty</strong> vui lòng không tiếp tục <strong>On-Duty</strong> khi chuyển sang ngày mới.<br><br>
+        //                     Vui lòng <strong>kết thúc On-Duty trước 23:50</strong> và <strong>bắt đầu lại sau 00:05 sáng hôm sau</strong>.<br><br>
+        //                     Xin trân trọng cảm ơn sự hợp tác của các sĩ quan.
+        //                     </p>`,
+        //         confirmButtonText: 'Rõ',
+        //         confirmButtonColor: '#ffc107'
+        //     });
+        // });
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     Swal.fire({
+        //         icon: 'info',
+        //         title: 'Thông Báo',
+        //         html: `<p style="text-align:left">
+        //                                Nhấn F5 để làm mới trang nếu có vấn đề về hiển thị dữ liệu.<br>
+        //                                <strong>Vui lòng Nhấn F5 hoặc Tải lại trang trước khi On-Duty</strong>
+        //                                 </p>`,
+        //         confirmButtonText: 'Rõ',
+        //         confirmButtonColor: '#ffc107'
+        //     });
+        // });
+    </script>
+    <script>
+        document.addEventListener("click", function (e) {
+            const popup = document.querySelector(".popup");
+            const checkbox = popup.querySelector("input[type=checkbox]");
+            if (!popup.contains(e.target)) {
+                checkbox.checked = false;
+            }
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            const xemBtns = document.querySelectorAll('.btn-logout');
+
+            xemBtns.forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    document.getElementById('loadingOverlay').style.display = 'flex';
+                });
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            const xemBtns = document.querySelectorAll('.loader-1');
+
+            xemBtns.forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    document.getElementById('loadingOverlay').style.display = 'flex';
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

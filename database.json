@@ -1,0 +1,18 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "Wuangziet",
+      "password": "123456",
+      "role": "admin",
+      "displayName": "Wuang Ziet",
+      "avatar": "https://ui-avatars.com/api/?name=Hvien+Dat&background=random",
+      "position": "Đại Úy",
+      "rank": "Giám đốc",
+      "attendance": [],
+      "monthlyHistory": [],
+      "salaryRate": 50000,
+      "careerTotal": 0
+    }
+  ]
+}
